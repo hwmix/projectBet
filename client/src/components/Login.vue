@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div><center>
     <h1>User Login</h1>
     <form v-on:submit.prevent="onLogin">
       <div>
@@ -16,13 +16,16 @@
           required
         />
       </div>
-      <button type="submit">Login</button>
+      <button class="edit-button" type="submit">Login</button> <button class="back-button" v-on:click="navigateTo('/user/create')">สร้างผู้ใช้</button>
+      
       <div class="error" v-if="error">{{ error }}</div>
     </form>
-  </div>
+  </center></div>
 </template>
+
 <script>
 import AuthenService from "../services/AuthenService";
+
 export default {
   data() {
     return {
@@ -32,6 +35,9 @@ export default {
     };
   },
   methods: {
+    navigateTo(route) {
+      this.$router.push(route);
+    },
     async onLogin() {
       try {
         const response = await AuthenService.login({
@@ -39,12 +45,20 @@ export default {
           password: this.password,
         });
 
+        // เก็บ token และข้อมูลผู้ใช้ใน store
         this.$store.dispatch("setToken", response.data.token);
         this.$store.dispatch("setUser", response.data.user);
+        
+        // ตรวจสอบประเภทผู้ใช้และเก็บใน store
+        const userType = response.data.user.type; // ดึงประเภทผู้ใช้จาก response
+        this.$store.dispatch("setUserType", userType);
 
-        this.$router.push({
-          name: "users",
-        });
+        // หากเป็นแอดมิน ให้ไปยังหน้าแอดมิน มิฉะนั้นไปที่หน้า users
+        if (userType === 'admin') {
+          this.$router.push({ name: "admin" }); // เปลี่ยนเส้นทางไปที่หน้าแอดมิน
+        } else {
+          this.$router.push({ name: "users" }); // เปลี่ยนเส้นทางไปที่หน้าผู้ใช้
+        }
       } catch (error) {
         console.log(error);
         this.error = error.response.data.error;
@@ -55,8 +69,32 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-.error {
-  color: red;
+.back-button {
+  background-color: #f0ad4e;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-button {
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.remove-button {
+  background-color: #e4523e;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 </style>

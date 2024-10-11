@@ -6,6 +6,7 @@
       <div>lastname: <input type="text" v-model="user.lastname"></div>
       <div>email: <input type="text" v-model="user.email"></div>
       <div>password: <input type="password" v-model="user.password"></div>
+      <div>Type: <input type="text" v-model="user.type"></div>
       <div><button type="submit">Edit user</button></div>
     </form>
   </div>
@@ -21,6 +22,7 @@ export default {
         lastname: '',
         email: '',
         password: '',
+        type: 'user',
         status: 'active'
       }
     }

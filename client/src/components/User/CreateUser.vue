@@ -21,6 +21,7 @@ export default {
         lastname: '',
         email: '',
         password: '',
+        type: 'user',
         status: 'active'
       }
     }
