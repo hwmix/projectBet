@@ -1,20 +1,18 @@
 <template>
   <div class="show-blog-container">
-    <!-- <h1 class="show-blog-title">Show Blog</h1> -->
     <div class="show-blog-content">
       <img :src="BASE_URL + blog.thumbnail" alt="Blog Thumbnail" class="blog-thumbnail" />
       <div class="blog-details">
-        <p><strong>title :</strong> {{ blog.title }}</p>
-        <p><strong>category:</strong> {{ blog.category }}</p>
-        <p><strong>content:</strong></p>
+        <p><strong>ชื่อ :</strong> {{ blog.title }}</p>
+        <p><strong>รุ่นนิยม:</strong> {{ blog.category }}</p>
+        <p><strong>รายละเอียด:</strong></p>
         <p v-html="blog.content"></p>
         <div class="button-container">
-          <button @click="navigateTo('/blogs')" class="back-button">กลับหน้าหลัก   </button>
+          <button @click="navigateTo('/blogs')" class="back-button">กลับหน้าหลัก</button>
           <div v-if="isUserLoggedIn && isAdmin">
             <button @click="navigateTo('/blog/edit/' + blog.id)" class="edit-button">แก้ไข</button>
             <button @click="deleteBlog(blog)" class="remove-button">ลบ Blog</button>
           </div>
-          
         </div>
       </div>
     </div>
@@ -40,12 +38,11 @@ export default {
     }
   },
   computed: {
-    // ใช้ computed เพื่อดึงค่าจาก store
     isUserLoggedIn() {
       return this.$store.state.user !== null;
     },
     isAdmin() {
-      return this.$store.state.userType == "admin"
+      return this.$store.state.userType == "admin";
     },
     currentUser() {
       return this.$store.state.user;
@@ -55,22 +52,22 @@ export default {
     navigateTo(route) {
       this.$router.push(route);
     },
-    async deleteBlog (blog) {
-            let result = confirm("Want to delete?")
-            if (result) {
-                try {
-                    await BlogsService.delete(blog)
-                    this.refreshData()
-                    this.$router.push({ name: 'blogs' });
-                } catch (err) {
-                    console.log(err)
-                }
-            }
-        },
-        async refreshData() {
-            this.blogs = (await BlogsService.index()).data
+    async deleteBlog(blog) {
+      let result = confirm("Want to delete?");
+      if (result) {
+        try {
+          await BlogsService.delete(blog);
+          this.refreshData();
+          this.$router.push({ name: 'blogs' });
+        } catch (err) {
+          console.log(err);
         }
-  },
+      }
+    },
+    async refreshData() {
+      this.blogs = (await BlogsService.index()).data;
+    }
+  }
 };
 </script>
 
@@ -81,62 +78,69 @@ export default {
   margin-top: 20px;
 }
 
-.show-blog-title {
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-}
-
 .show-blog-content {
   display: flex;
   background-color: #ffffff;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px; /* ทำให้มุมโค้งมน */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงาเพื่อให้ดูเหมือนกรอบยกสูง */
+  border: 2px solid #ddd; /* เพิ่มกรอบรอบเนื้อหา */
+  max-width: 800px; /* กำหนดความกว้างสูงสุดเพื่อให้ดูเป็นระเบียบ */
+  flex-wrap: wrap; /* ให้มีการห่อเนื้อหาในกรณีที่หน้าจอแคบ */
 }
 
 .blog-thumbnail {
   width: 250px;
-  height: auto;
+  height: 250px;
+  object-fit: cover;
   margin-right: 20px;
-  border-radius: 8px;
+  border-radius: 10px; /* ทำให้รูปภาพมีมุมโค้งมน */
+  border: 1px solid #ddd; /* เพิ่มกรอบรอบรูปภาพ */
 }
 
 .blog-details {
   display: flex;
   flex-direction: column;
+  flex: 1; /* ให้พื้นที่เนื้อหายืดตามขนาดที่มี */
 }
 
 .button-container {
-  margin-top: 10px;
+  margin-top: 20px;
   display: flex;
   gap: 10px;
+  flex-wrap: wrap; /* จัดเรียงปุ่มให้ห่อเมื่อหน้าจอแคบ */
+}
+
+button {
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s;
 }
 
 .back-button {
   background-color: #f0ad4e;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #ec971f; /* สีของปุ่มเมื่อวางเมาส์ */
 }
 
 .edit-button {
   background-color: #5cb85c;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: #4cae4c; /* สีของปุ่มเมื่อวางเมาส์ */
 }
 
 .remove-button {
   background-color: #e4523e;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+}
+
+.remove-button:hover {
+  background-color: #c9302c; /* สีของปุ่มเมื่อวางเมาส์ */
 }
 </style>

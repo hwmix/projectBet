@@ -1,24 +1,22 @@
 <template>
   <div>
-    <h1>Get All Users</h1>
+    <h1>All Users</h1>
     <div>
       <!-- <button v-on:click="navigateTo('/user/create')">สร้างผู้ใช้</button> -->
     </div>
     <hr>
     <div v-if="users.length">
       <div><b>จำนวนผู้ใช้งาน:</b> {{ users.length }}</div>
-      <div v-for="userItem in users" v-bind:key="userItem.id">
-        <div><b>id:</b> {{ userItem.id }}</div>
-        <div><b>ชื่อผู้ใช้:</b> {{ userItem.name }} {{ userItem.lastname }}</div>
+      <div v-for="userItem in users" v-bind:key="userItem.id" class="user-item-container">
+        <div class="user-item-header"><b>ชื่อผู้ใช้:</b> {{ userItem.name }} {{ userItem.lastname }}</div>
         <div><b>อีเมล:</b> {{ userItem.email }}</div>
-        <div><b>status:</b> {{ userItem.status }}</div>
-        <div><b>type:</b> {{ userItem.type }}</div>
-        <div>
-          <button v-on:click="navigateTo('/user/'+userItem.id)">ดูข้อมูล</button>
+        <div><b>ประเภทผู้ใช้:</b> {{ userItem.type }}</div>
+        <div class="button-group">
+          <button class="view-button" v-on:click="navigateTo('/user/'+userItem.id)">ดูข้อมูล</button>
           <!-- แสดงปุ่มแก้ไข/ลบถ้าผู้ใช้เป็น admin -->
           <div v-if="user && user.type === 'admin'">
-            <button v-on:click="navigateTo('/user/edit/'+userItem.id)">แก้ไขข้อมูล</button>
-            <button v-on:click="deleteUser(userItem)">ลบข้อมูล</button>
+            <button class="edit-button" v-on:click="navigateTo('/user/edit/'+userItem.id)">แก้ไขข้อมูล</button>
+            <button class="delete-button" v-on:click="deleteUser(userItem)">ลบข้อมูล</button>
           </div>
         </div>
         <hr>
@@ -78,4 +76,68 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.user-item-container {
+  border: 1px solid #e0e0e0; /* กรอบรอบแต่ละผู้ใช้ */
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #f9f9f9; /* สีพื้นหลังที่นุ่มนวล */
+  margin-bottom: 10px;
+}
+
+.user-item-header {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.button-group {
+  margin-top: 10px;
+}
+
+button {
+  background-color: #4CAF50; /* สีพื้นหลังของปุ่ม */
+  color: white; /* สีของข้อความในปุ่ม */
+  border: none;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button.view-button {
+  background-color: #2196F3; /* สีพื้นหลังของปุ่มดูข้อมูล */
+}
+
+button.view-button:hover {
+  background-color: #1976D2; /* สีของปุ่มดูข้อมูลเมื่อวางเมาส์ */
+}
+
+button.edit-button {
+  background-color: #FFC107; /* สีพื้นหลังของปุ่มแก้ไข */
+}
+
+button.edit-button:hover {
+  background-color: #FFB300; /* สีของปุ่มแก้ไขเมื่อวางเมาส์ */
+}
+
+button.delete-button {
+  background-color: #f44336; /* สีพื้นหลังของปุ่มลบ */
+}
+
+button.delete-button:hover {
+  background-color: #d32f2f; /* สีของปุ่มลบเมื่อวางเมาส์ */
+}
+
+hr {
+  border: 1px solid #ddd;
+  margin: 15px 0;
+}
+</style>

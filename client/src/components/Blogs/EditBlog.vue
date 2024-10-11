@@ -2,7 +2,7 @@
   <div>
     <h1>Edit Blog</h1>
     <form v-on:submit.prevent="editBlog">
-      <p>title: <input type="text" v-model="blog.title" /></p>
+      <p>ชื่อ: <input type="text" v-model="blog.title" /></p>
       <transition name="fade">
         <div class="thumbnail-pic" v-if="blog.thumbnail != 'null'">
           <img :src="BASE_URL + blog.thumbnail" alt="thumbnail" />
@@ -40,23 +40,23 @@
           />
           <br />
           <button v-on:click.prevent="useThumbnail(picture.name)">
-            Thumbnail
+            วางไอคอน
           </button>
           <button v-on:click.prevent="delFile(picture)">Delete</button>
         </li>
       </transition-group>
       <div class="clearfix"></div>
-      <p><strong>content:</strong></p>
+      <p><strong>รายละเอียด:</strong></p>
       <vue-ckeditor
         v-model.lazy="blog.content"
         :config="config"
         @blur="onBlur($event)"
         @focus="onFocus($event)"
       />
-      <p>category: <input type="text" v-model="blog.category" /></p>
+      <p>รุ่นนิยม: <input type="text" v-model="blog.category" /></p>
       <p>status: <input type="text" v-model="blog.status" /></p>
       <p>
-        <button type="submit">update blog</button>
+        <button type="submit">update</button>
         <button v-on:click="navigateTo('/blogs')">กลับ</button>
       </p>
     </form>

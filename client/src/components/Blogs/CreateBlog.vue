@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Create Blog</h1>
+    <h1>AddItem</h1>
     <form v-on:submit.prevent="createBlog">
       <p>
-        title:
+        ชื่อ:
         <input type="text" v-model="blog.title" />
       </p>
       <transition name="fade">
@@ -44,7 +44,7 @@
             />
             <br />
             <button v-on:click.prevent="useThumbnail(picture.name)">
-              Thumbnail
+              วางไอคอน
             </button>
             <button v-on:click.prevent="delFile(picture)">Delete</button>
           </li>
@@ -52,7 +52,7 @@
         <div class="clearfix"></div>
       </div>
       <p>
-        <strong>content:</strong>
+        <strong>รายละเอียด:</strong>
       </p>
       <vue-ckeditor
         v-model.lazy="blog.content"
@@ -61,15 +61,12 @@
         @focus="onFocus($event)"
       />
       <p>
-        category:
+        รุ่นนิยม:
         <input type="text" v-model="blog.category" />
       </p>
+      
       <p>
-        status:
-        <input type="text" v-model="blog.status" />
-      </p>
-      <p>
-        <button type="submit">create blog</button>
+        <button type="submit">add</button>
       </p>
     </form>
   </div>
